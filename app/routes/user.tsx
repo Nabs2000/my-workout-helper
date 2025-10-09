@@ -4,6 +4,7 @@ import { type User } from "../types/User";
 
 import { doc, getDoc } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
+import WorkoutForm from "../components/workoutForm";
 
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -19,8 +20,8 @@ export async function loader({ params }: Route.LoaderArgs) {
 }
 
 export default function User({ loaderData }: { loaderData: User }) {
-  const [workoutisLoading, setWorkoutisLoading] = useState(false);
   const [showWorkoutForm, setShowWorkoutForm] = useState(false);
+  
   return (
     <div>
       <h1>Hello {loaderData.firstName}!</h1>
@@ -29,10 +30,11 @@ export default function User({ loaderData }: { loaderData: User }) {
         onClick={() => 
             showWorkoutForm ? setShowWorkoutForm(false) : setShowWorkoutForm(true)
         }
-        type="submit"
+        type="button"
       >
-        {showWorkoutForm ? "Add Workout" : "Hide Workout"}
+        {showWorkoutForm ? "Hide Workout" : "Show Workout"}
       </button>
+      {showWorkoutForm ? <WorkoutForm uid={loaderData.uid} /> : ""}
     </div>
   );
 }
