@@ -30,6 +30,7 @@ export default function Register() {
     
         // Create a user profile document in Firestore using the user's UID
         await setDoc(doc(db, "users", user.uid), {
+          uid: user.uid,
           firstName: firstName,
           lastName: lastName,
           email: email,
