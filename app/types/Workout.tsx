@@ -1,5 +1,7 @@
+import type { WorkoutType } from "./workoutType";
+
 export interface Workout {
-    workoutName: string,
+    workoutName: WorkoutType,
     numberSets: number,
     numberReps: number,
     weight: number,
