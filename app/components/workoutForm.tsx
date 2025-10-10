@@ -30,6 +30,12 @@ export default function WorkoutForm({ uid }: { uid: string }) {
       console.log("Error!");
     } finally {
       setIsLoading(false);
+      setWorkout({
+        workoutName: "",
+        numberSets: 0,
+        numberReps: 0,
+        weight: 0,
+      });
     }
   }
   return (
