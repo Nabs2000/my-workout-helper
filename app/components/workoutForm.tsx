@@ -12,6 +12,7 @@ export default function WorkoutForm({ uid }: { uid: string }) {
     numberSets: 0,
     numberReps: 0,
     weight: 0,
+    dateLogged: new Date()
   });
 
   async function handleSubmit(w: Workout) {
@@ -23,8 +24,14 @@ export default function WorkoutForm({ uid }: { uid: string }) {
 
       console.log("Document written with ID: ", usersRef.id);
 
+      // Ensure dateLogged is a Date object
+      const workoutToSave = {
+        ...w,
+        dateLogged: w.dateLogged instanceof Date ? w.dateLogged : new Date(w.dateLogged),
+      };
+
       await updateDoc(usersRef, {
-        workouts: arrayUnion(w),
+        workouts: arrayUnion(workoutToSave),
       });
     } catch (error: any) {
       console.log("Error!");
@@ -35,6 +42,7 @@ export default function WorkoutForm({ uid }: { uid: string }) {
         numberSets: 0,
         numberReps: 0,
         weight: 0,
+        dateLogged: new Date(),
       });
     }
   }
@@ -112,6 +120,23 @@ export default function WorkoutForm({ uid }: { uid: string }) {
               setWorkout({
                 ...workout,
                 weight: Number(e.target.value),
+              })
+            }
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Date Logged (YYYY-MM-DD)
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="dateLogged"
+            type="date"
+            value={workout.dateLogged instanceof Date ? workout.dateLogged.toISOString().slice(0, 10) : ""}
+            onChange={(e) =>
+              setWorkout({
+                ...workout,
+                dateLogged: new Date(e.target.value),
               })
             }
           />
