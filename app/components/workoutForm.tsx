@@ -4,6 +4,7 @@ import { Form } from "react-router";
 import type { Workout } from "~/types/Workout";
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
+import type { WorkoutType } from "~/types/workoutType";
 
 export default function WorkoutForm({ uid }: { uid: string }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -12,7 +13,7 @@ export default function WorkoutForm({ uid }: { uid: string }) {
     numberSets: 0,
     numberReps: 0,
     weight: 0,
-    dateLogged: new Date()
+    dateLogged: new Date(),
   });
 
   async function handleSubmit(w: Workout) {
@@ -27,7 +28,8 @@ export default function WorkoutForm({ uid }: { uid: string }) {
       // Ensure dateLogged is a Date object
       const workoutToSave = {
         ...w,
-        dateLogged: w.dateLogged instanceof Date ? w.dateLogged : new Date(w.dateLogged),
+        dateLogged:
+          w.dateLogged instanceof Date ? w.dateLogged : new Date(w.dateLogged),
       };
 
       await updateDoc(usersRef, {
@@ -56,19 +58,26 @@ export default function WorkoutForm({ uid }: { uid: string }) {
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Workout Name
           </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="workoutName"
-            type="text"
-            placeholder="Muscle-ups"
+          <select
+            className="w-full p-2 border rounded"
             value={workout.workoutName}
             onChange={(e) =>
               setWorkout({
                 ...workout,
-                workoutName: String(e.target.value),
+                workoutName: e.target.value as WorkoutType,
               })
             }
-          />
+          >
+            <option value="">Select a workout</option>
+            <option value="Bench Press">Bench Press</option>
+            <option value="Squat">Squat</option>
+            <option value="Deadlift">Deadlift</option>
+            <option value="RDL">RDL</option>
+            <option value="Overhead Press">Overhead Press</option>
+            <option value="Pull Up">Pull Up</option>
+            <option value="Push Up">Push Up</option>
+            <option value="Muscle Up">Muscle Up</option>
+          </select>
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -132,7 +141,11 @@ export default function WorkoutForm({ uid }: { uid: string }) {
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="dateLogged"
             type="date"
-            value={workout.dateLogged instanceof Date ? workout.dateLogged.toISOString().slice(0, 10) : ""}
+            value={
+              workout.dateLogged instanceof Date
+                ? workout.dateLogged.toISOString().slice(0, 10)
+                : ""
+            }
             onChange={(e) =>
               setWorkout({
                 ...workout,
