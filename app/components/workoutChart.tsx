@@ -1,7 +1,14 @@
 import { useState } from "react";
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Legend } from "recharts";
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Legend,
+  Tooltip,
+} from "recharts";
 import type { User } from "~/types/User";
-import type { Workout } from "~/types/Workout";
 import type { ChartDataPoint } from "~/types/chartDataPoint";
 import type { WorkoutType } from "~/types/workoutType";
 // How to use
@@ -21,17 +28,22 @@ export default function WorkoutChart({ user }: { user: User }) {
   const [workoutType, setWorkoutType] = useState<WorkoutType>("");
 
   // Filter workouts by selected type if one is selected
-  const filteredWorkouts = workoutType 
-    ? user.workouts.filter(workout => workout.workoutName === workoutType)
+  const filteredWorkouts = workoutType
+    ? user.workouts.filter((workout) => workout.workoutName === workoutType)
     : user.workouts;
 
   // Convert filtered workouts to chart data points
-  const data: ChartDataPoint[] = filteredWorkouts.map(({ dateLogged, weight, workoutName }) => ({
-    xAxis: dateLogged,
-    yAxis: weight,
-    name: workoutName // Adding workout name to data point for reference
-  }));
+  const data: ChartDataPoint[] = filteredWorkouts.map(
+    ({ dateLogged, weight, workoutName }) => {
+      return {
+        date: new Date(dateLogged),
+        weight: weight,
+        name: workoutName,
+      };
+    }
+  );
 
+  console.log(data);
   return (
     <div>
       <button
@@ -46,27 +58,30 @@ export default function WorkoutChart({ user }: { user: User }) {
       {showChart ? (
         <div>
           <LineChart width={600} height={300} data={data}>
-            <CartesianGrid />
-            <Line 
-              type="monotone" 
-              dataKey="yAxis" 
-              name={workoutType || 'All Workouts'} 
-              stroke="#8884d8" 
-              strokeWidth={2} 
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" tick={{ fill: "black" }} />
+            <YAxis
+              tick={{ fill: "black" }}
+              label={{
+                value: "Weight (kg)",
+                angle: -90,
+                position: "insideLeft",
+              }}
+            />
+            <Tooltip />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="weight"
+              name={workoutType || "All Workouts"}
+              stroke="#8884d8"
+              strokeWidth={2}
               dot={{ r: 4 }}
               activeDot={{ r: 6 }}
             />
-            <XAxis 
-              dataKey="xAxis" 
-              label={{ value: 'Date', position: 'insideBottomRight', offset: -5 }}
-            />
-            <YAxis 
-              label={{ value: 'Weight', angle: -90, position: 'insideLeft' }}
-            />
-            <Legend />
           </LineChart>
           <select
-            className="w-full p-2 border rounded"
+            className="w-full text-black p-2 border rounded"
             value={workoutType}
             onChange={(e) => setWorkoutType(e.target.value as WorkoutType)}
           >

@@ -1,4 +1,5 @@
 export interface ChartDataPoint {
-    xAxis: Date,
-    yAxis: Number
+  date: Date;
+  weight: number;
+  name: string;
 }
