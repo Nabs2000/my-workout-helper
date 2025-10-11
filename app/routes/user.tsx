@@ -25,16 +25,7 @@ export default function User({ loaderData }: { loaderData: User }) {
   return (
     <div>
       <h1>Hello {loaderData.firstName}!</h1>
-      <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        onClick={() =>
-          showWorkoutForm ? setShowWorkoutForm(false) : setShowWorkoutForm(true)
-        }
-        type="button"
-      >
-        {showWorkoutForm ? "Hide Workout" : "Show Workout"}
-      </button>
-      {showWorkoutForm ? <WorkoutForm uid={loaderData.uid} /> : ""}
+      <WorkoutForm uid={loaderData.uid} />
       <WorkoutChart user={loaderData} />
     </div>
   );
