@@ -98,7 +98,7 @@ export default function WorkoutForm({ uid }: { uid: string }) {
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="numberSets"
-              type="text"
+              type="number"
               placeholder="5"
               value={workout.numberSets}
               onChange={(e) =>
@@ -116,7 +116,7 @@ export default function WorkoutForm({ uid }: { uid: string }) {
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="numberReps"
-              type="text"
+              type="number"
               placeholder="10"
               value={workout.numberReps}
               onChange={(e) =>
@@ -134,7 +134,7 @@ export default function WorkoutForm({ uid }: { uid: string }) {
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="weight"
-              type="text"
+              type="number"
               placeholder="25"
               value={workout.weight}
               onChange={(e) =>
