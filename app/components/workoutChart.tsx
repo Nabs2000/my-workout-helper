@@ -44,7 +44,7 @@ export default function WorkoutChart({ user }: { user: User }) {
   const data: ChartDataPoint[] = filteredWorkouts.map(
     ({ dateLogged, weight, workoutName }) => {
       return {
-        date: toDateTime(dateLogged.seconds),
+        date: dateLogged instanceof Date ? dateLogged : toDateTime(dateLogged.seconds),
         weight: weight,
         name: workoutName,
       };
