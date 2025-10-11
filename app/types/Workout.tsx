@@ -1,7 +1,10 @@
+import type { WorkoutType } from "./workoutType";
+import { Timestamp } from "firebase/firestore";
+
 export interface Workout {
-    workoutName: string,
-    numberSets: number,
-    numberReps: number,
-    weight: number,
-    dateLogged: Date
+  workoutName: WorkoutType;
+  numberSets: number;
+  numberReps: number;
+  weight: number;
+  dateLogged: Date | Timestamp;
 }
