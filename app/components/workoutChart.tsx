@@ -44,7 +44,10 @@ export default function WorkoutChart({ user }: { user: User }) {
   const data: ChartDataPoint[] = filteredWorkouts.map(
     ({ dateLogged, weight, workoutName }) => {
       return {
-        date: dateLogged instanceof Date ? dateLogged : toDateTime(dateLogged.seconds),
+        date:
+          dateLogged instanceof Date
+            ? dateLogged
+            : toDateTime(dateLogged.seconds),
         weight: weight,
         name: workoutName,
       };
@@ -66,14 +69,22 @@ export default function WorkoutChart({ user }: { user: User }) {
       {showChart ? (
         workoutType !== "" ? (
           <div>
-            <LineChart width={600} height={300} data={data}>
+            <LineChart
+              width={600}
+              height={400}
+              data={data}
+              margin={{ top: 5, right: 30, left: 20, bottom: 80 }}
+            >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="date"
                 tickFormatter={(date) => new Date(date).toLocaleDateString()}
                 tick={{ fill: "black" }}
+                tickMargin={30}
+                angle={-45}
                 minTickGap={20}
                 interval={0}
+                padding={{ left: 20, right: 40 }}
               />
               <YAxis
                 tick={{ fill: "black" }}
@@ -84,7 +95,7 @@ export default function WorkoutChart({ user }: { user: User }) {
                 }}
               />
               <Tooltip />
-              <Legend />
+              <Legend verticalAlign="top" height={36} />
               <Line
                 type="monotone"
                 dataKey="weight"
