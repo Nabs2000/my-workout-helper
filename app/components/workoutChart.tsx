@@ -27,23 +27,31 @@ export default function WorkoutChart({ user }: { user: User }) {
   const [showChart, setShowChart] = useState(false);
   const [workoutType, setWorkoutType] = useState<WorkoutType>("");
 
+  const toDateTime = (secs: number) => {
+    var t = new Date(1970, 0, 1); // Epoch
+    t.setSeconds(secs);
+    return t;
+  };
+
   // Filter workouts by selected type if one is selected
   const filteredWorkouts = workoutType
     ? user.workouts.filter((workout) => workout.workoutName === workoutType)
     : user.workouts;
 
+  console.log("filteredWorkouts", filteredWorkouts);
+
   // Convert filtered workouts to chart data points
   const data: ChartDataPoint[] = filteredWorkouts.map(
     ({ dateLogged, weight, workoutName }) => {
       return {
-        date: new Date(dateLogged),
+        date: toDateTime(dateLogged.seconds),
         weight: weight,
         name: workoutName,
       };
     }
   );
 
-  console.log(data);
+  console.log("data", data);
   return (
     <div>
       <button
@@ -60,7 +68,13 @@ export default function WorkoutChart({ user }: { user: User }) {
           <div>
             <LineChart width={600} height={300} data={data}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" tick={{ fill: "black" }} />
+              <XAxis
+                dataKey="date"
+                tickFormatter={(date) => new Date(date).toLocaleDateString()}
+                tick={{ fill: "black" }}
+                minTickGap={20}
+                interval={0}
+              />
               <YAxis
                 tick={{ fill: "black" }}
                 label={{
