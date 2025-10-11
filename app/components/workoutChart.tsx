@@ -53,33 +53,51 @@ export default function WorkoutChart({ user }: { user: User }) {
           showChart ? setShowChart(false) : setShowChart(true);
         }}
       >
-        {showChart ? "Hide Chart..." : "Show Chart"}
+        {showChart ? "Hide Chart" : "Show Chart"}
       </button>
       {showChart ? (
-        <div>
-          <LineChart width={600} height={300} data={data}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" tick={{ fill: "black" }} />
-            <YAxis
-              tick={{ fill: "black" }}
-              label={{
-                value: "Weight (kg)",
-                angle: -90,
-                position: "insideLeft",
-              }}
-            />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="weight"
-              name={workoutType || "All Workouts"}
-              stroke="#8884d8"
-              strokeWidth={2}
-              dot={{ r: 4 }}
-              activeDot={{ r: 6 }}
-            />
-          </LineChart>
+        workoutType !== "" ? (
+          <div>
+            <LineChart width={600} height={300} data={data}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" tick={{ fill: "black" }} />
+              <YAxis
+                tick={{ fill: "black" }}
+                label={{
+                  value: "Weight (lbs)",
+                  angle: -90,
+                  position: "insideLeft",
+                }}
+              />
+              <Tooltip />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="weight"
+                name={workoutType || "All Workouts"}
+                stroke="#8884d8"
+                strokeWidth={2}
+                dot={{ r: 4 }}
+                activeDot={{ r: 6 }}
+              />
+            </LineChart>
+            <select
+              className="w-full text-black p-2 border rounded"
+              value={workoutType}
+              onChange={(e) => setWorkoutType(e.target.value as WorkoutType)}
+            >
+              <option value="">Select a workout</option>
+              <option value="Bench Press">Bench Press</option>
+              <option value="Squat">Squat</option>
+              <option value="Deadlift">Deadlift</option>
+              <option value="RDL">RDL</option>
+              <option value="Overhead Press">Overhead Press</option>
+              <option value="Pull Up">Pull Up</option>
+              <option value="Push Up">Push Up</option>
+              <option value="Muscle Up">Muscle Up</option>
+            </select>
+          </div>
+        ) : (
           <select
             className="w-full text-black p-2 border rounded"
             value={workoutType}
@@ -95,7 +113,7 @@ export default function WorkoutChart({ user }: { user: User }) {
             <option value="Push Up">Push Up</option>
             <option value="Muscle Up">Muscle Up</option>
           </select>
-        </div>
+        )
       ) : (
         ""
       )}
