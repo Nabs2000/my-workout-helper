@@ -11,6 +11,7 @@ import {
 import type { User } from "~/types/User";
 import type { ChartDataPoint } from "~/types/chartDataPoint";
 import type { WorkoutType } from "~/types/workoutType";
+import { Timestamp } from "firebase/firestore";
 // How to use
 /*
 import { LineChart, Line } from 'recharts';
@@ -38,10 +39,24 @@ export default function WorkoutChart({ user }: { user: User }) {
     ? user.workouts.filter((workout) => workout.workoutName === workoutType)
     : user.workouts;
 
-  console.log("filteredWorkouts", filteredWorkouts);
+  // Sort the filtered workouts
+  const sortedWorkouts = filteredWorkouts.sort((a, b) => {
+    if (
+      a.dateLogged instanceof Object &&
+      b.dateLogged instanceof Object
+    ) {
+      // Cast dateLogged to Timestamp
+      const aTimestamp = a.dateLogged as Timestamp;
+      const bTimestamp = b.dateLogged as Timestamp;
+      return aTimestamp.seconds - bTimestamp.seconds;
+    }
+    return 0;
+  });
+
+  console.log("sortedWorkouts", sortedWorkouts);
 
   // Convert filtered workouts to chart data points
-  const data: ChartDataPoint[] = filteredWorkouts.map(
+  const data: ChartDataPoint[] = sortedWorkouts.map(
     ({ dateLogged, weight, workoutName }) => {
       return {
         date:
