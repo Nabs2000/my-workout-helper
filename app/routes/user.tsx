@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Route } from "./+types/user";
-import { type User } from "../types/User";
+import type { User } from "../types/User";
 
 import { doc, getDoc } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
@@ -20,7 +20,6 @@ export async function loader({ params }: Route.LoaderArgs) {
 }
 
 export default function User({ loaderData }: { loaderData: User }) {
-  const [showWorkoutForm, setShowWorkoutForm] = useState(false);
 
   return (
     <div>
