@@ -11,7 +11,7 @@ export function meta({}: Route.MetaArgs) {
 export default function Home() {
   return (
     <div>
-      <h1>Welcome to My Workout Helper</h1>
+      <h1 className="text-2xl font-bold text-black">Welcome to My Workout Helper</h1>
       <Login />
     </div>
   )
