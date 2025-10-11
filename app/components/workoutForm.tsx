@@ -31,7 +31,7 @@ export default function WorkoutForm({ uid }: { uid: string }) {
       const workoutToSave = {
         ...w,
         dateLogged:
-          w.dateLogged instanceof Date ? w.dateLogged : new Date(w.dateLogged),
+          w.dateLogged instanceof Date ? w.dateLogged : new Date(w.dateLogged.seconds),
       };
 
       await updateDoc(usersRef, {
@@ -67,7 +67,7 @@ export default function WorkoutForm({ uid }: { uid: string }) {
           onSubmit={(e: FormEvent<HTMLFormElement>) => handleSubmit(workout)}
         >
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
+            <label className="block text-black text-sm font-bold mb-2">
               Workout Name
             </label>
             <select
