@@ -5,7 +5,7 @@ import type { User } from "../types/User";
 import { doc, getDoc } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
 import WorkoutForm from "../components/workoutForm";
-import WorkoutChart from "~/components/workoutChart";
+import WorkoutChart from "~/components/workoutProgGraph";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const userId = params.userId;
