@@ -24,7 +24,7 @@ export default function User({ loaderData }: { loaderData: User }) {
 
   return (
     <div>
-      <h1>Hello {loaderData.firstName}!</h1>
+      <h1 className="text-2xl font-bold text-black">Hello {loaderData.firstName}!</h1>
       <WorkoutForm uid={loaderData.uid} />
       <WorkoutChart user={loaderData} />
     </div>
