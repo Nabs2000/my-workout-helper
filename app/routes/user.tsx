@@ -7,6 +7,7 @@ import { getFirestore } from "firebase/firestore";
 import WorkoutForm from "../components/workoutForm";
 import WorkoutChart from "~/components/workoutProgGraph";
 import WeightForm from "~/components/weightForm";
+import WeightChart from "~/components/weightProgGraph";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const userId = params.userId;
@@ -28,6 +29,7 @@ export default function User({ loaderData }: { loaderData: User }) {
       <WorkoutForm uid={loaderData.uid} />
       <WorkoutChart user={loaderData} />
       <WeightForm uid={loaderData.uid} />
+      <WeightChart user={loaderData} />
     </div>
   );
 }
