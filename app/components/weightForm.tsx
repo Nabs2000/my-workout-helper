@@ -21,13 +21,8 @@ export default function WeightForm({ uid }: { uid: string }) {
     try {
       setIsLoading(true);
       const usersRef = doc(db, "users", uid);
-
-      const weightToSave = {
-        weight: weight,
-        dateLogged: new Date(),
-      }
       await updateDoc(usersRef, {
-        weights: arrayUnion(weightToSave),
+        weights: arrayUnion(weight),
       });
     } catch (error: any) {
       console.log("Error!");
