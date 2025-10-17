@@ -47,7 +47,7 @@ export default function Register() {
         email: email,
         createdAt: new Date(),
         workouts: [],
-        // Add other relevant profile information
+        weights: [],
       });
 
       console.log("User registered and profile created:", user.uid);
