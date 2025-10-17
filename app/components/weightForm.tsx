@@ -19,7 +19,6 @@ export default function WeightForm({ uid }: { uid: string }) {
   async function handleSubmit(weight: UserWeight) {
     const db = getFirestore();
     try {
-      console.log(weight);
       setIsLoading(true);
       const usersRef = doc(db, "users", uid);
 
@@ -27,9 +26,6 @@ export default function WeightForm({ uid }: { uid: string }) {
         weight: weight,
         dateLogged: new Date(),
       }
-
-      console.log("Document written with ID: ", usersRef.id);
-
       await updateDoc(usersRef, {
         weights: arrayUnion(weightToSave),
       });
@@ -64,7 +60,10 @@ export default function WeightForm({ uid }: { uid: string }) {
               Weight
             </label>
             <input
-              className="w-full p-2 border rounded"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="weight"
+              type="number"
+              placeholder="25"
               value={weight.weight}
               onChange={(e) =>
                 setWeight({
