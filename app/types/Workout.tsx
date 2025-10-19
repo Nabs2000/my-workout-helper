@@ -6,5 +6,5 @@ export interface Workout {
   numberSets: number;
   numberReps: number;
   weight: number;
-  dateLogged: Date | Timestamp;
+  dateLogged: string;
 }
