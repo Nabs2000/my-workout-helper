@@ -6,7 +6,13 @@ import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
 import type { WorkoutType } from "~/types/workoutType";
 
-export default function WorkoutForm({ uid, onSubmit }: { uid: string, onSubmit?: () => void }) {
+export default function WorkoutForm({
+  uid,
+  onSubmit,
+}: {
+  uid: string;
+  onSubmit?: () => void;
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const [workout, setWorkout] = useState<Workout>({
     workoutName: "",
@@ -17,21 +23,26 @@ export default function WorkoutForm({ uid, onSubmit }: { uid: string, onSubmit?:
   });
 
   const [showWorkoutForm, setShowWorkoutForm] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(w: Workout) {
     const db = getFirestore();
     try {
-      console.log(workout);
+      if (workout.workoutName === "") {
+        setError("Please select a workout");
+        return;
+      }
+      setError(null);
       setIsLoading(true);
       const usersRef = doc(db, "users", uid);
-
-      console.log("Document written with ID: ", usersRef.id);
 
       // Ensure dateLogged is a Date object
       const workoutToSave = {
         ...w,
         dateLogged:
-          w.dateLogged instanceof Date ? w.dateLogged : new Date(w.dateLogged.seconds),
+          w.dateLogged instanceof Date
+            ? w.dateLogged
+            : new Date(w.dateLogged.seconds),
       };
 
       await updateDoc(usersRef, {
@@ -41,7 +52,7 @@ export default function WorkoutForm({ uid, onSubmit }: { uid: string, onSubmit?:
         onSubmit();
       }
     } catch (error: any) {
-      console.log("Error!");
+      console.log(error);
     } finally {
       setIsLoading(false);
       setWorkout({
@@ -69,11 +80,17 @@ export default function WorkoutForm({ uid, onSubmit }: { uid: string, onSubmit?:
           className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
           onSubmit={(e: FormEvent<HTMLFormElement>) => handleSubmit(workout)}
         >
+          {error && (
+            <div className="mb-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded">
+              {error}
+            </div>
+          )}
           <div className="mb-4">
             <label className="block text-black text-sm font-bold mb-2">
               Workout Name
             </label>
             <select
+              required
               className="w-full p-2 border rounded text-black"
               value={workout.workoutName}
               onChange={(e) =>
