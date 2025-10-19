@@ -2,7 +2,7 @@ import type { FormEvent } from "react";
 import { useState } from "react";
 import { Form } from "react-router";
 import type { Workout } from "~/types/Workout";
-import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
 import type { WorkoutType } from "~/types/workoutType";
 
@@ -19,7 +19,7 @@ export default function WorkoutForm({
     numberSets: 0,
     numberReps: 0,
     weight: 0,
-    dateLogged: new Date(),
+    dateLogged: "",
   });
 
   const [showWorkoutForm, setShowWorkoutForm] = useState(false);
@@ -39,14 +39,25 @@ export default function WorkoutForm({
       // Ensure dateLogged is a Date object
       const workoutToSave = {
         ...w,
-        dateLogged:
-          w.dateLogged instanceof Date
-            ? w.dateLogged
-            : new Date(w.dateLogged.seconds),
+        dateLogged: w.dateLogged,
       };
 
+      const workouts = await getDoc(usersRef);
+      const workoutsData = workouts.data();
+      const workoutsArray = workoutsData?.workouts || [];
+
+      // If workout with same date exists, replace it
+      const workoutIndex = workoutsArray.findIndex(
+        (workout: Workout) => workout.dateLogged === workoutToSave.dateLogged
+      );
+      if (workoutIndex !== -1) {
+        workoutsArray[workoutIndex] = workoutToSave;
+      } else {
+        workoutsArray.push(workoutToSave);
+      }
+
       await updateDoc(usersRef, {
-        workouts: arrayUnion(workoutToSave),
+        workouts: workoutsArray,
       });
       if (onSubmit) {
         onSubmit();
@@ -60,7 +71,7 @@ export default function WorkoutForm({
         numberSets: 0,
         numberReps: 0,
         weight: 0,
-        dateLogged: new Date(),
+        dateLogged: "",
       });
     }
   }
@@ -167,21 +178,17 @@ export default function WorkoutForm({
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
-              Date Logged (YYYY-MM-DD)
+              Date Logged (DD-MM-YYYY)
             </label>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="dateLogged"
               type="date"
-              value={
-                workout.dateLogged instanceof Date
-                  ? workout.dateLogged.toISOString().slice(0, 10)
-                  : ""
-              }
+              value={workout.dateLogged}
               onChange={(e) =>
                 setWorkout({
                   ...workout,
-                  dateLogged: new Date(e.target.value),
+                  dateLogged: e.target.value,
                 })
               }
             />
