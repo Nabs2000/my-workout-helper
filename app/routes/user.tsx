@@ -8,6 +8,7 @@ import WorkoutForm from "../components/workoutForm";
 import WorkoutChart from "~/components/workoutProgGraph";
 import WeightForm from "~/components/weightForm";
 import WeightChart from "~/components/weightProgGraph";
+import { Link } from "react-router";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const userId = params.userId;
@@ -30,6 +31,7 @@ export default function User({ loaderData }: { loaderData: User }) {
       <WorkoutChart user={loaderData} />
       <WeightForm uid={loaderData.uid} />
       <WeightChart user={loaderData} />
+      <Link className="text-blue-500 hover:text-blue-700" to="/">Logout</Link>
     </div>
   );
 }
