@@ -31,9 +31,19 @@ export async function loader({ params }: Route.LoaderArgs) {
 export default function User({ loaderData }: { loaderData: User }) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<"workout" | "weight">("workout");
+  const [weightRefreshKey, setWeightRefreshKey] = useState(0);
+  const [workoutRefreshKey, setWorkoutRefreshKey] = useState(0);
 
   const handleLogout = () => {
     navigate("/");
+  };
+
+  const handleWorkoutSubmit = () => {
+    setWorkoutRefreshKey((prevKey) => prevKey + 1);
+  };
+
+  const handleWeightSubmit = () => {
+    setWeightRefreshKey((prevKey) => prevKey + 1);
   };
 
   return (
@@ -101,13 +111,13 @@ export default function User({ loaderData }: { loaderData: User }) {
               <div className="space-y-4">
                 <div>
                   <p className="text-sm text-gray-500">Name</p>
-                  <p className="font-medium">
+                  <p className="font-medium text-black">
                     {loaderData.firstName} {loaderData.lastName || ""}
                   </p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Email</p>
-                  <p className="font-medium">{loaderData.email}</p>
+                  <p className="font-medium text-black">{loaderData.email}</p>
                 </div>
               </div>
             </div>
@@ -118,7 +128,10 @@ export default function User({ loaderData }: { loaderData: User }) {
                   <FiPlus className="w-5 h-5" />
                   Add Workout
                 </h2>
-                <WorkoutForm uid={loaderData.uid} />
+                <WorkoutForm
+                  uid={loaderData.uid}
+                  onSubmit={handleWorkoutSubmit}
+                />
               </div>
             ) : (
               <div className="bg-white rounded-2xl shadow-xl p-6">
@@ -126,7 +139,10 @@ export default function User({ loaderData }: { loaderData: User }) {
                   <FiTrendingUp className="w-5 h-5" />
                   Log Weight
                 </h2>
-                <WeightForm uid={loaderData.uid} />
+                <WeightForm
+                  uid={loaderData.uid}
+                  onSubmit={handleWeightSubmit}
+                />
               </div>
             )}
           </div>

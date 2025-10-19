@@ -7,10 +7,16 @@ import { getFirestore } from "firebase/firestore";
 import type { WorkoutType } from "~/types/workoutType";
 import type { UserWeight } from "~/types/UserWeight";
 
-export default function WeightForm({ uid }: { uid: string }) {
+export default function WeightForm({
+  uid,
+  onSubmit,
+}: {
+  uid: string;
+  onSubmit?: () => void;
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const [weight, setWeight] = useState<UserWeight>({
-    weight: 0.00,
+    weight: 0.0,
     dateLogged: new Date(),
   });
 
@@ -24,12 +30,15 @@ export default function WeightForm({ uid }: { uid: string }) {
       await updateDoc(usersRef, {
         weights: arrayUnion(weight),
       });
+      if (onSubmit) {
+        onSubmit();
+      }
     } catch (error: any) {
       console.log("Error!");
     } finally {
       setIsLoading(false);
       setWeight({
-        weight: 0.00,
+        weight: 0.0,
         dateLogged: new Date(),
       });
     }

@@ -6,7 +6,7 @@ import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
 import type { WorkoutType } from "~/types/workoutType";
 
-export default function WorkoutForm({ uid }: { uid: string }) {
+export default function WorkoutForm({ uid, onSubmit }: { uid: string, onSubmit?: () => void }) {
   const [isLoading, setIsLoading] = useState(false);
   const [workout, setWorkout] = useState<Workout>({
     workoutName: "",
@@ -37,6 +37,9 @@ export default function WorkoutForm({ uid }: { uid: string }) {
       await updateDoc(usersRef, {
         workouts: arrayUnion(workoutToSave),
       });
+      if (onSubmit) {
+        onSubmit();
+      }
     } catch (error: any) {
       console.log("Error!");
     } finally {
