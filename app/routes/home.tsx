@@ -1,5 +1,5 @@
 import type { Route } from "./+types/home";
-import {Login} from "../components/login";
+import { Login } from "../components/login";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -11,8 +11,7 @@ export function meta({}: Route.MetaArgs) {
 export default function Home() {
   return (
     <div>
-      <h1 className="text-2xl font-bold text-black">Welcome to My Workout Helper</h1>
       <Login />
     </div>
-  )
+  );
 }
