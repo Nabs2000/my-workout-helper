@@ -25,9 +25,6 @@ const MyChart = () => (
 */
 
 export default function WeightChart({ user }: { user: User }) {
-  const [showChart, setShowChart] = useState(false);
-  //   console.log("User Weights:", user.weights);
-
   const toDateTime = (secs: number) => {
     var t = new Date(1970, 0, 1); // Epoch
     t.setSeconds(secs);
@@ -48,73 +45,60 @@ export default function WeightChart({ user }: { user: User }) {
   console.log("sortedWeights", sortedWeights);
 
   // Convert weights to chart data points
-  const data: ChartDataPoint[] = sortedWeights.map(
-    ({ dateLogged, weight }) => {
-      return {
-        date:
-          dateLogged instanceof Date
-            ? dateLogged
-            : toDateTime(dateLogged.seconds),
-        weight: weight,
-        name: "Weight",
-      };
-    }
-  );
+  const data: ChartDataPoint[] = sortedWeights.map(({ dateLogged, weight }) => {
+    return {
+      date:
+        dateLogged instanceof Date
+          ? dateLogged
+          : toDateTime(dateLogged.seconds),
+      weight: weight,
+      name: "Weight",
+    };
+  });
 
-    console.log("data", data);
+  console.log("data", data);
 
   return (
     <div>
-      <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        type="submit"
-        onClick={() => {
-          showChart ? setShowChart(false) : setShowChart(true);
-        }}
-      >
-        {showChart ? "Hide Chart" : "Show Chart"}
-      </button>
-      {showChart && (
-        <div>
-          <LineChart
-            width={600}
-            height={400}
-            data={data}
-            margin={{ top: 5, right: 30, left: 20, bottom: 80 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-              dataKey="date"
-              tickFormatter={(date) => new Date(date).toLocaleDateString()}
-              tick={{ fill: "black" }}
-              tickMargin={30}
-              angle={-45}
-              minTickGap={20}
-              interval={0}
-              padding={{ left: 20, right: 40 }}
-            />
-            <YAxis
-              tick={{ fill: "black" }}
-              label={{
-                value: "Weight (lbs)",
-                angle: -90,
-                position: "insideLeft",
-              }}
-            />
-            <Tooltip />
-            <Legend verticalAlign="top" height={36} />
-            <Line
-              type="monotone"
-              dataKey="weight"
-              name="Weight"
-              stroke="#8884d8"
-              strokeWidth={2}
-              dot={{ r: 4 }}
-              activeDot={{ r: 6 }}
-            />
-          </LineChart>
-        </div>
-      )}
+      <div>
+        <LineChart
+          width={600}
+          height={400}
+          data={data}
+          margin={{ top: 5, right: 30, left: 20, bottom: 80 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis
+            dataKey="date"
+            tickFormatter={(date) => new Date(date).toLocaleDateString()}
+            tick={{ fill: "black" }}
+            tickMargin={30}
+            angle={-45}
+            minTickGap={20}
+            interval={0}
+            padding={{ left: 20, right: 40 }}
+          />
+          <YAxis
+            tick={{ fill: "black" }}
+            label={{
+              value: "Weight (lbs)",
+              angle: -90,
+              position: "insideLeft",
+            }}
+          />
+          <Tooltip />
+          <Legend verticalAlign="top" height={36} />
+          <Line
+            type="monotone"
+            dataKey="weight"
+            name="Weight"
+            stroke="#8884d8"
+            strokeWidth={2}
+            dot={{ r: 4 }}
+            activeDot={{ r: 6 }}
+          />
+        </LineChart>
+      </div>
     </div>
   );
 }
