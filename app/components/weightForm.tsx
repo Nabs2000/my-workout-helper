@@ -17,7 +17,7 @@ export default function WeightForm({
   const [isLoading, setIsLoading] = useState(false);
   const [weight, setWeight] = useState<UserWeight>({
     weight: 0.0,
-    dateLogged: new Date(),
+    dateLogged: "",
   });
 
   const [showWeightForm, setShowWeightForm] = useState(false);
@@ -39,7 +39,7 @@ export default function WeightForm({
       setIsLoading(false);
       setWeight({
         weight: 0.0,
-        dateLogged: new Date(),
+        dateLogged: "",
       });
     }
   }
@@ -85,15 +85,11 @@ export default function WeightForm({
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="dateLogged"
               type="date"
-              value={
-                weight.dateLogged instanceof Date
-                  ? weight.dateLogged.toISOString().slice(0, 10)
-                  : ""
-              }
+              value={weight.dateLogged}
               onChange={(e) =>
                 setWeight({
                   ...weight,
-                  dateLogged: new Date(e.target.value),
+                  dateLogged: e.target.value,
                 })
               }
             />
