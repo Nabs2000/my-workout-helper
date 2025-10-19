@@ -74,7 +74,7 @@ export default function WorkoutForm({ uid, onSubmit }: { uid: string, onSubmit?:
               Workout Name
             </label>
             <select
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-black"
               value={workout.workoutName}
               onChange={(e) =>
                 setWorkout({
