@@ -11,7 +11,6 @@ import {
 import type { User } from "~/types/User";
 import type { ChartDataPoint } from "~/types/chartDataPoint";
 import type { WorkoutType } from "~/types/workoutType";
-import { Timestamp } from "firebase/firestore";
 // How to use
 /*
 import { LineChart, Line } from 'recharts';
@@ -27,26 +26,16 @@ const MyChart = () => (
 export default function WorkoutChart({ user }: { user: User }) {
   const [workoutType, setWorkoutType] = useState<WorkoutType>("");
 
-  const toDateTime = (secs: number) => {
-    var t = new Date(1970, 0, 1); // Epoch
-    t.setSeconds(secs);
-    return t;
-  };
-
   // Filter workouts by selected type if one is selected
   const filteredWorkouts = workoutType
     ? user.workouts.filter((workout) => workout.workoutName === workoutType)
     : user.workouts;
 
+  console.log("filteredWorkouts", filteredWorkouts);
+
   // Sort the filtered workouts
   const sortedWorkouts = filteredWorkouts.sort((a, b) => {
-    if (a.dateLogged instanceof Object && b.dateLogged instanceof Object) {
-      // Cast dateLogged to Timestamp
-      const aTimestamp = a.dateLogged as Timestamp;
-      const bTimestamp = b.dateLogged as Timestamp;
-      return aTimestamp.seconds - bTimestamp.seconds;
-    }
-    return 0;
+    return new Date(a.dateLogged).getTime() - new Date(b.dateLogged).getTime();
   });
 
   console.log("sortedWorkouts", sortedWorkouts);
@@ -54,11 +43,11 @@ export default function WorkoutChart({ user }: { user: User }) {
   // Convert filtered workouts to chart data points
   const data: ChartDataPoint[] = sortedWorkouts.map(
     ({ dateLogged, weight, workoutName }) => {
+      const day = Number(dateLogged.split("-")[2]);
+      const month = Number(dateLogged.split("-")[1]);
+      const year = Number(dateLogged.split("-")[0]);
       return {
-        date:
-          dateLogged instanceof Date
-            ? dateLogged
-            : toDateTime(dateLogged.seconds),
+        date: new Date(year, month - 1, day),
         weight: weight,
         name: workoutName,
       };
