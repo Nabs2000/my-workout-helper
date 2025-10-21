@@ -126,7 +126,7 @@ export default function User({ loaderData }: { loaderData: User }) {
               <div className="bg-white rounded-2xl shadow-xl p-6">
                 <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
                   <FiPlus className="w-5 h-5" />
-                  Add Workout
+                  Workout Form
                 </h2>
                 <WorkoutForm
                   uid={loaderData.uid}
@@ -153,7 +153,7 @@ export default function User({ loaderData }: { loaderData: User }) {
               {activeTab === "workout" ? (
                 <>
                   <h2 className="text-lg font-semibold text-gray-800 mb-6">
-                    Workout Progress
+                    Visualize Your Progress
                   </h2>
                   <div className="h-[400px]">
                     <WorkoutChart user={loaderData} />
@@ -162,7 +162,7 @@ export default function User({ loaderData }: { loaderData: User }) {
               ) : (
                 <>
                   <h2 className="text-lg font-semibold text-gray-800 mb-6">
-                    Weight Progress
+                    Visualize Your Progress
                   </h2>
                   <div className="h-[400px]">
                     <WeightChart user={loaderData} />
