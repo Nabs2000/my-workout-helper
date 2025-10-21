@@ -1,6 +1,8 @@
 export type WorkoutType =
   | ""
   | "Bench Press"
+  | "Incline Bench Press"
+  | "Shoulder Press"
   | "Squat"
   | "Deadlift"
   | "RDL"

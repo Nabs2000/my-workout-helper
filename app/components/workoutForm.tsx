@@ -113,6 +113,8 @@ export default function WorkoutForm({
             >
               <option value="">Select a workout</option>
               <option value="Bench Press">Bench Press</option>
+              <option value="Incline Bench Press">Incline Bench Press</option>
+              <option value="Shoulder Press">Shoulder Press</option>
               <option value="Squat">Squat</option>
               <option value="Deadlift">Deadlift</option>
               <option value="RDL">RDL</option>
