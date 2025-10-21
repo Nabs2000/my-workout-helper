@@ -48,8 +48,6 @@ export default function Register() {
 
       navigate("/");
     } catch (error: any) {
-      console.error("Registration error:", error);
-      // You might want to show this error to the user
     } finally {
       setIsLoading(false);
     }

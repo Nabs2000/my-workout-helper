@@ -17,8 +17,6 @@ export default function WeightChart({ user }: { user: User }) {
     return new Date(a.dateLogged).getTime() - new Date(b.dateLogged).getTime();
   });
 
-  console.log("sortedWeights", sortedWeights);
-
   // Convert weights to chart data points
   const data: ChartDataPoint[] = sortedWeights.map(({ dateLogged, weight }) => {
     const day = Number(dateLogged.split("-")[2])
@@ -30,8 +28,6 @@ export default function WeightChart({ user }: { user: User }) {
       name: "Weight",
     };
   });
-
-  console.log("data", data);
 
   return (
     <div>

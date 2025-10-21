@@ -63,7 +63,6 @@ export default function WorkoutForm({
         onSubmit();
       }
     } catch (error: any) {
-      console.log(error);
     } finally {
       setIsLoading(false);
       setWorkout({

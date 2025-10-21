@@ -11,17 +11,6 @@ import {
 import type { User } from "~/types/User";
 import type { ChartDataPoint } from "~/types/chartDataPoint";
 import type { WorkoutType } from "~/types/workoutType";
-// How to use
-/*
-import { LineChart, Line } from 'recharts';
-const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400}, ...];
-
-const MyChart = () => (
-  <LineChart width={600} height={300} data={data}>
-    <Line dataKey="uv" />
-  </LineChart>
-);
-*/
 
 export default function WorkoutChart({ user }: { user: User }) {
   const [workoutType, setWorkoutType] = useState<WorkoutType>("");
@@ -31,14 +20,10 @@ export default function WorkoutChart({ user }: { user: User }) {
     ? user.workouts.filter((workout) => workout.workoutName === workoutType)
     : user.workouts;
 
-  console.log("filteredWorkouts", filteredWorkouts);
-
   // Sort the filtered workouts
   const sortedWorkouts = filteredWorkouts.sort((a, b) => {
     return new Date(a.dateLogged).getTime() - new Date(b.dateLogged).getTime();
   });
-
-  console.log("sortedWorkouts", sortedWorkouts);
 
   // Convert filtered workouts to chart data points
   const data: ChartDataPoint[] = sortedWorkouts.map(
@@ -54,7 +39,6 @@ export default function WorkoutChart({ user }: { user: User }) {
     }
   );
 
-  console.log("data", data);
   return (
     <div>
       {workoutType !== "" ? (

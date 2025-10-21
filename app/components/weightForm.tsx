@@ -34,7 +34,6 @@ export default function WeightForm({
         onSubmit();
       }
     } catch (error: any) {
-      console.log("Error!");
     } finally {
       setIsLoading(false);
       setWeight({
