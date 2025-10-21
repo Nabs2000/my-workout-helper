@@ -93,7 +93,7 @@ export default function User({ loaderData }: { loaderData: User }) {
                 } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2`}
               >
                 <FiTrendingUp className="w-5 h-5" />
-                Weight Progress
+                Weight Tracker
               </button>
             </nav>
           </div>
@@ -153,7 +153,7 @@ export default function User({ loaderData }: { loaderData: User }) {
               {activeTab === "workout" ? (
                 <>
                   <h2 className="text-lg font-semibold text-gray-800 mb-6">
-                    Visualize Your Progress
+                    Visualize Your Workout Progress
                   </h2>
                   <div className="h-[400px]">
                     <WorkoutChart user={loaderData} />
@@ -162,7 +162,7 @@ export default function User({ loaderData }: { loaderData: User }) {
               ) : (
                 <>
                   <h2 className="text-lg font-semibold text-gray-800 mb-6">
-                    Visualize Your Progress
+                    Visualize Your Weight Progress
                   </h2>
                   <div className="h-[400px]">
                     <WeightChart user={loaderData} />
