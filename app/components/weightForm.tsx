@@ -66,6 +66,7 @@ export default function WeightForm({
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="weight"
               type="number"
+              min="0"
               placeholder="25"
               value={weight.weight}
               onChange={(e) =>

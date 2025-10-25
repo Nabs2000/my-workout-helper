@@ -131,6 +131,7 @@ export default function WorkoutForm({
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="numberSets"
               type="number"
+              min="0"
               placeholder="5"
               value={workout.numberSets}
               onChange={(e) =>
@@ -149,6 +150,7 @@ export default function WorkoutForm({
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="numberReps"
               type="number"
+              min="0"
               placeholder="10"
               value={workout.numberReps}
               onChange={(e) =>
@@ -167,6 +169,7 @@ export default function WorkoutForm({
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="weight"
               type="number"
+              min="0"
               placeholder="25"
               value={workout.weight}
               onChange={(e) =>
