@@ -3,8 +3,8 @@ import { Login } from "../components/login";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "My Workout Helper" },
+    { name: "description", content: "Track your workouts and weight" },
   ];
 }
 
