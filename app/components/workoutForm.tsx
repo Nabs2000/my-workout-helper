@@ -83,7 +83,7 @@ export default function WorkoutForm({
         }
         type="button"
       >
-        {showWorkoutForm ? "Hide Workout" : "Show Workout"}
+        {showWorkoutForm ? "Hide" : "Add Workout"}
       </button>
       {showWorkoutForm ? (
         <Form

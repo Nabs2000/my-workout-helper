@@ -51,7 +51,7 @@ export default function WeightForm({
         }
         type="button"
       >
-        {showWeightForm ? "Hide Weight" : "Show Weight"}
+        {showWeightForm ? "Hide" : "Add Weight"}
       </button>
       {showWeightForm ? (
         <Form
