@@ -7,6 +7,7 @@ import WorkoutForm from "../components/workoutForm";
 import WorkoutChart from "~/components/workoutProgGraph";
 import WeightForm from "~/components/weightForm";
 import WeightChart from "~/components/weightProgGraph";
+import Bug from "~/components/bug";
 import { useNavigate } from "react-router";
 import {
   FiLogOut,
@@ -30,7 +31,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 
 export default function User({ loaderData }: { loaderData: User }) {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<"workout" | "weight">("workout");
+  const [activeTab, setActiveTab] = useState<"workout" | "weight" | "bug">("workout");
   const [weightRefreshKey, setWeightRefreshKey] = useState(0);
   const [workoutRefreshKey, setWorkoutRefreshKey] = useState(0);
 
@@ -95,6 +96,17 @@ export default function User({ loaderData }: { loaderData: User }) {
                 <FiTrendingUp className="w-5 h-5" />
                 Weight Tracker
               </button>
+              <button
+                onClick={() => setActiveTab("bug")}
+                className={`${
+                  activeTab === "bug"
+                    ? "border-blue-500 text-blue-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2`}
+              >
+                <FiTrendingUp className="w-5 h-5" />
+                Bug Reporter
+              </button>
             </nav>
           </div>
         </div>
@@ -122,7 +134,7 @@ export default function User({ loaderData }: { loaderData: User }) {
               </div>
             </div>
 
-            {activeTab === "workout" ? (
+            {activeTab === "workout" && (
               <div className="bg-white rounded-2xl shadow-xl p-6">
                 <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
                   <FiPlus className="w-5 h-5" />
@@ -133,7 +145,8 @@ export default function User({ loaderData }: { loaderData: User }) {
                   onSubmit={handleWorkoutSubmit}
                 />
               </div>
-            ) : (
+            )}
+            {activeTab === "weight" && (
               <div className="bg-white rounded-2xl shadow-xl p-6">
                 <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
                   <FiTrendingUp className="w-5 h-5" />
@@ -143,6 +156,15 @@ export default function User({ loaderData }: { loaderData: User }) {
                   uid={loaderData.uid}
                   onSubmit={handleWeightSubmit}
                 />
+              </div>
+            )}
+            {activeTab === "bug" && (
+              <div className="bg-white rounded-2xl shadow-xl p-6">
+                <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                  <FiTrendingUp className="w-5 h-5" />
+                  Bug Reporter
+                </h2>
+                <Bug />
               </div>
             )}
           </div>
