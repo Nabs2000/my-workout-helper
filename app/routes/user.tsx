@@ -112,88 +112,90 @@ export default function User({ loaderData }: { loaderData: User }) {
         </div>
 
         {/* Tab Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column - Forms */}
-          <div className="lg:col-span-1 space-y-6">
-            <div className="bg-white rounded-2xl shadow-xl p-6">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                <FiUser className="w-5 h-5" />
-                Profile
-              </h2>
-              <div className="space-y-4">
-                <div>
-                  <p className="text-sm text-gray-500">Name</p>
-                  <p className="font-medium text-black">
-                    {loaderData.firstName} {loaderData.lastName || ""}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Email</p>
-                  <p className="font-medium text-black">{loaderData.email}</p>
-                </div>
-              </div>
-            </div>
-
-            {activeTab === "workout" && (
+        {activeTab !== "bug" ? (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left Column - Forms */}
+            <div className="lg:col-span-1 space-y-6">
               <div className="bg-white rounded-2xl shadow-xl p-6">
                 <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                  <FiPlus className="w-5 h-5" />
-                  Workout Form
+                  <FiUser className="w-5 h-5" />
+                  Profile
                 </h2>
-                <WorkoutForm
-                  uid={loaderData.uid}
-                  onSubmit={handleWorkoutSubmit}
-                />
-              </div>
-            )}
-            {activeTab === "weight" && (
-              <div className="bg-white rounded-2xl shadow-xl p-6">
-                <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                  <FiTrendingUp className="w-5 h-5" />
-                  Log Weight
-                </h2>
-                <WeightForm
-                  uid={loaderData.uid}
-                  onSubmit={handleWeightSubmit}
-                />
-              </div>
-            )}
-            {activeTab === "bug" && (
-              <div className="bg-white rounded-2xl shadow-xl p-6">
-                <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                  <FiTrendingUp className="w-5 h-5" />
-                  Bug Reporter
-                </h2>
-                <Bug />
-              </div>
-            )}
-          </div>
-
-          {/* Right Column - Charts */}
-          <div className="lg:col-span-2">
-            <div className="bg-white rounded-2xl shadow-xl p-6 h-full">
-              {activeTab === "workout" ? (
-                <>
-                  <h2 className="text-lg font-semibold text-gray-800 mb-6">
-                    Visualize Your Workout Progress
-                  </h2>
-                  <div className="h-[400px]">
-                    <WorkoutChart user={loaderData} />
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-sm text-gray-500">Name</p>
+                    <p className="font-medium text-black">
+                      {loaderData.firstName} {loaderData.lastName || ""}
+                    </p>
                   </div>
-                </>
-              ) : (
-                <>
-                  <h2 className="text-lg font-semibold text-gray-800 mb-6">
-                    Visualize Your Weight Progress
-                  </h2>
-                  <div className="h-[400px]">
-                    <WeightChart user={loaderData} />
+                  <div>
+                    <p className="text-sm text-gray-500">Email</p>
+                    <p className="font-medium text-black">{loaderData.email}</p>
                   </div>
-                </>
+                </div>
+              </div>
+
+              {activeTab === "workout" && (
+                <div className="bg-white rounded-2xl shadow-xl p-6">
+                  <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                    <FiPlus className="w-5 h-5" />
+                    Workout Form
+                  </h2>
+                  <WorkoutForm
+                    uid={loaderData.uid}
+                    onSubmit={handleWorkoutSubmit}
+                  />
+                </div>
+              )}
+              {activeTab === "weight" && (
+                <div className="bg-white rounded-2xl shadow-xl p-6">
+                  <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                    <FiTrendingUp className="w-5 h-5" />
+                    Log Weight
+                  </h2>
+                  <WeightForm
+                    uid={loaderData.uid}
+                    onSubmit={handleWeightSubmit}
+                  />
+                </div>
               )}
             </div>
+
+            {/* Right Column - Charts */}
+            <div className="lg:col-span-2">
+              <div className="bg-white rounded-2xl shadow-xl p-6 h-full">
+                {activeTab === "workout" && (
+                  <>
+                    <h2 className="text-lg font-semibold text-gray-800 mb-6">
+                      Visualize Your Workout Progress
+                    </h2>
+                    <div className="h-[400px]">
+                      <WorkoutChart user={loaderData} />
+                    </div>
+                  </>
+                )}
+                {activeTab === "weight" && (
+                  <>
+                    <h2 className="text-lg font-semibold text-gray-800 mb-6">
+                      Visualize Your Weight Progress
+                    </h2>
+                    <div className="h-[400px]">
+                      <WeightChart user={loaderData} />
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="bg-white rounded-2xl shadow-xl p-6">
+            <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+              <FiTrendingUp className="w-5 h-5" />
+              Bug Reporter
+            </h2>
+            <Bug />
+          </div>
+        )}
       </main>
     </div>
   );
