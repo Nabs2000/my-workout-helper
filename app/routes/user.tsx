@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Route } from "./+types/user";
 import type { User } from "../types/User";
+import { db } from "config/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
-import { getFirestore } from "firebase/firestore";
 import WorkoutForm from "../components/workoutForm";
 import WorkoutChart from "~/components/workoutProgGraph";
 import WeightForm from "~/components/weightForm";
@@ -15,25 +15,52 @@ import {
   FiTrendingUp,
   FiUser,
   FiPlus,
+  FiLoader,
 } from "react-icons/fi";
+import { FaBug } from "react-icons/fa";
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const userId = params.userId;
-  const db = getFirestore();
-  const docRef = doc(db, "users", userId);
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    return docSnap.data();
-  } else {
-    console.log("No such document!");
-  }
+  // Just return the userId - we'll fetch user data client-side where auth context exists
+  return { userId: params.userId };
 }
 
-export default function User({ loaderData }: { loaderData: User }) {
+export default function User({ loaderData }: { loaderData: { userId: string } }) {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<"workout" | "weight" | "bug">("workout");
+  const [userData, setUserData] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<"workout" | "weight" | "bug">(
+    "workout"
+  );
   const [weightRefreshKey, setWeightRefreshKey] = useState(0);
   const [workoutRefreshKey, setWorkoutRefreshKey] = useState(0);
+
+  // Fetch user data client-side where Firebase Auth context exists
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        setLoading(true);
+        console.log("Fetching user data for:", loaderData.userId);
+        const docRef = doc(db, "users", loaderData.userId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          console.log("User data:", docSnap.data());
+          setUserData(docSnap.data() as User);
+        } else {
+          console.log("No such document!");
+          setError("User not found");
+        }
+      } catch (err: any) {
+        console.error("Error fetching user data:", err);
+        setError(err.message || "Failed to load user data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [loaderData.userId]);
 
   const handleLogout = () => {
     navigate("/");
@@ -47,6 +74,36 @@ export default function User({ loaderData }: { loaderData: User }) {
     setWeightRefreshKey((prevKey) => prevKey + 1);
   };
 
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+        <div className="text-center">
+          <FiLoader className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
+          <p className="text-gray-600">Loading your data...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error || !userData) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+        <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md">
+          <h2 className="text-xl font-bold text-red-600 mb-4">Error</h2>
+          <p className="text-gray-700 mb-4">{error || "Failed to load user data"}</p>
+          <button
+            onClick={() => navigate("/")}
+            className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Back to Login
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-8">
       {/* Header */}
@@ -54,7 +111,7 @@ export default function User({ loaderData }: { loaderData: User }) {
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold text-gray-800">
-              Welcome back, {loaderData.firstName}!
+              Welcome back, {userData.firstName}!
             </h1>
             <p className="text-gray-600">Track your fitness journey</p>
           </div>
@@ -104,7 +161,7 @@ export default function User({ loaderData }: { loaderData: User }) {
                     : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2`}
               >
-                <FiTrendingUp className="w-5 h-5" />
+                <FaBug className="w-5 h-5" />
                 Bug Reporter
               </button>
             </nav>
@@ -125,12 +182,12 @@ export default function User({ loaderData }: { loaderData: User }) {
                   <div>
                     <p className="text-sm text-gray-500">Name</p>
                     <p className="font-medium text-black">
-                      {loaderData.firstName} {loaderData.lastName || ""}
+                      {userData.firstName} {userData.lastName || ""}
                     </p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Email</p>
-                    <p className="font-medium text-black">{loaderData.email}</p>
+                    <p className="font-medium text-black">{userData.email}</p>
                   </div>
                 </div>
               </div>
@@ -142,7 +199,7 @@ export default function User({ loaderData }: { loaderData: User }) {
                     Workout Form
                   </h2>
                   <WorkoutForm
-                    uid={loaderData.uid}
+                    uid={userData.uid}
                     onSubmit={handleWorkoutSubmit}
                   />
                 </div>
@@ -154,7 +211,7 @@ export default function User({ loaderData }: { loaderData: User }) {
                     Log Weight
                   </h2>
                   <WeightForm
-                    uid={loaderData.uid}
+                    uid={userData.uid}
                     onSubmit={handleWeightSubmit}
                   />
                 </div>
@@ -170,7 +227,7 @@ export default function User({ loaderData }: { loaderData: User }) {
                       Visualize Your Workout Progress
                     </h2>
                     <div className="h-[400px]">
-                      <WorkoutChart user={loaderData} />
+                      <WorkoutChart user={userData} />
                     </div>
                   </>
                 )}
@@ -180,7 +237,7 @@ export default function User({ loaderData }: { loaderData: User }) {
                       Visualize Your Weight Progress
                     </h2>
                     <div className="h-[400px]">
-                      <WeightChart user={loaderData} />
+                      <WeightChart user={userData} />
                     </div>
                   </>
                 )}
@@ -190,7 +247,7 @@ export default function User({ loaderData }: { loaderData: User }) {
         ) : (
           <div className="bg-white rounded-2xl shadow-xl p-6">
             <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-              <FiTrendingUp className="w-5 h-5" />
+              <FaBug className="w-5 h-5" />
               Bug Reporter
             </h2>
             <Bug />

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Form } from "react-router";
 import type { Workout } from "~/types/Workout";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
-import { getFirestore } from "firebase/firestore";
+import { db } from "config/firebaseConfig";
 import type { WorkoutType } from "~/types/workoutType";
 
 export default function WorkoutForm({
@@ -26,7 +26,6 @@ export default function WorkoutForm({
   const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(w: Workout) {
-    const db = getFirestore();
     try {
       if (workout.workoutName === "") {
         setError("Please select a workout");

@@ -24,22 +24,27 @@ export function Login() {
         password
       );
       const user = userCredential.user;
+      console.log("User:", user);
       navigate(`/user/${user.uid}`);
     } catch (error: any) {
       // More user-friendly error messages
       switch (error.code) {
         case "auth/invalid-email":
           setError("Please enter a valid email address");
+          console.log("Invalid email address entered");
           break;
         case "auth/user-not-found":
         case "auth/wrong-password":
           setError("Invalid email or password");
+          console.log("Invalid email or password entered");
           break;
         case "auth/too-many-requests":
           setError("Too many attempts. Please try again later.");
+          console.log("Too many login attempts");
           break;
         default:
           setError("Failed to sign in. Please try again.");
+          console.error("Error during sign-in:", error);
       }
     } finally {
       setIsLoading(false);

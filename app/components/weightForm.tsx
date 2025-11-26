@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Form } from "react-router";
 import type { Workout } from "~/types/Workout";
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
-import { getFirestore } from "firebase/firestore";
+import { db } from "config/firebaseConfig";
 import type { WorkoutType } from "~/types/workoutType";
 import type { UserWeight } from "~/types/UserWeight";
 
@@ -23,7 +23,6 @@ export default function WeightForm({
   const [showWeightForm, setShowWeightForm] = useState(false);
 
   async function handleSubmit(weight: UserWeight) {
-    const db = getFirestore();
     try {
       setIsLoading(true);
       const usersRef = doc(db, "users", uid);
